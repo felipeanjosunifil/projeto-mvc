@@ -65,13 +65,4 @@ public class UsuarioController {
             return ResponseEntity.badRequest().body(false);
         }
     }
-
-    private Usuario atualizarUsuario(Usuario usuarioAntigo, Usuario usuarioAtual) {
-        usuarioAntigo.setNome(usuarioAtual.getNome());
-        usuarioAntigo.setEmail(usuarioAtual.getEmail());
-        usuarioAntigo.setSenha(usuarioAtual.getSenha());
-
-        return usuarioAntigo;
-    }
-
 }
