@@ -8,24 +8,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     private int ID = 0;
     private List<Usuario> usuarios = new ArrayList<>();
 
-    @PostMapping("/usuarios/novo")
+    @PostMapping("/novo")
     public ResponseEntity<Boolean> criarUsuario(@RequestBody Usuario usuario) {
         usuario.setId(++ID);
         usuarios.add(usuario);
         return ResponseEntity.status(201).body(true);
     }
 
-    @GetMapping("/usuarios")
+    @GetMapping
     public ResponseEntity<List<Usuario>> getUsuarios() {
         return ResponseEntity.ok(usuarios);
     }
 
-    @DeleteMapping("/usuarios/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deletarUsuarioPorId(@PathVariable("id") int id) {
         Usuario usuarioDelecao = null;
 
@@ -43,7 +44,7 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/usuarios")
+    @PutMapping
     public ResponseEntity<Boolean> atualizarUsuarioPorId(@RequestBody Usuario usuarioAtual) {
 //        boolean atualizado = false;
         Usuario usuarioAtualiacao = null;
