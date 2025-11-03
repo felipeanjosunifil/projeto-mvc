@@ -4,9 +4,9 @@ import com.github.felipeanjosunifil.projeto_mvc.model.Produto;
 import java.util.List;
 
 public interface ProdutoService {
-    public Boolean novoProduto(Produto produto);
-    public List<Produto> getProdutos();
-    public Produto getProdutoPorId(int id);
-    public List<Produto> consultarProdutos(String nome, double valorMaximo);
-    public Boolean apagarProduto(int id);
+    Boolean novoProduto(Produto produto) throws Exception;
+    List<Produto> getProdutos();
+    Produto getProdutoPorId(int id) throws Exception;
+    List<Produto> consultarProdutos(String nome, double valorMaximo);
+    Boolean apagarProduto(int id) throws Exception;
 }

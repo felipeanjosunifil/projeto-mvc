@@ -1,6 +1,8 @@
 package com.github.felipeanjosunifil.projeto_mvc.controller;
 
 import com.github.felipeanjosunifil.projeto_mvc.model.Produto;
+import com.github.felipeanjosunifil.projeto_mvc.model.service.ProdutoService;
+import com.github.felipeanjosunifil.projeto_mvc.model.service.ProdutoServiceImp;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
+
+    private ProdutoService produtoService = new ProdutoServiceImp();
 
     private int id = 0;
     private List<Produto> produtos = new ArrayList<>();
