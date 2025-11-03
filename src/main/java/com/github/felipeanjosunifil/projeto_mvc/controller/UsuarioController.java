@@ -23,7 +23,7 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<Usuario>> getUsuarios() {
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.status(200).body(usuarios);
     }
 
     @DeleteMapping("/{id}")
@@ -38,6 +38,17 @@ public class UsuarioController {
 
         if (usuarioDelecao != null) {
             usuarios.remove(usuarioDelecao);
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(404).body(false);
+        }
+    }
+
+    public ResponseEntity<Boolean> deletarUsuarioPor(@PathVariable("id") int id) {
+
+        boolean deletou = usuarios.removeIf(usuario -> usuario.getId() == id);
+
+        if(deletou) {
             return ResponseEntity.ok(true);
         } else {
             return ResponseEntity.status(404).body(false);
