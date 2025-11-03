@@ -5,8 +5,6 @@ import com.github.felipeanjosunifil.projeto_mvc.model.service.ProdutoService;
 import com.github.felipeanjosunifil.projeto_mvc.model.service.ProdutoServiceImp;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,68 +13,46 @@ public class ProdutoController {
 
     private ProdutoService produtoService = new ProdutoServiceImp();
 
-    private int id = 0;
-    private List<Produto> produtos = new ArrayList<>();
-
     @PostMapping("/novo")
-    public ResponseEntity<Boolean> novoProduto(@RequestBody Produto produto) {
-        produto.setId(++id);
-        produtos.add(produto);
-        return ResponseEntity.status(201).body(true);
+    public ResponseEntity<?> novoProduto(@RequestBody Produto produto) {
+        try {
+            produtoService.novoProduto(produto);
+            return ResponseEntity.status(201).body(true);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<Produto>> getProdutos() {
+        List<Produto> produtos = produtoService.getProdutos();
         return ResponseEntity.ok(produtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Produto> getProdutoPorId(@PathVariable("id") int id) {
-        Produto produto = null;
-
-        for (Produto p : produtos) {
-            if (p.getId() == id) {
-                produto = p;
-            }
+        try {
+            Produto produto = produtoService.getProdutoPorId(id);
+            return ResponseEntity.ok(produto);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.ok(produto);
     }
 
     @GetMapping("/buscar")
     public ResponseEntity<List<Produto>> consultarProdutos(@RequestParam("nome") String nome, @RequestParam(value = "valorMaximo", required = false) double valorMaximo) {
-        List<Produto> produtosEncontrados = new ArrayList<>();
-        double valorBuscar = 1000000.0;
-
-        if (valorMaximo > 1) {
-            valorBuscar = valorMaximo;
-        }
-
-        for (Produto p: produtos) {
-            if (p.getNome().toLowerCase().contains(nome.toLowerCase()) && p.getPreco() <= valorBuscar) {
-                produtosEncontrados.add(p);
-            }
-        }
+        List<Produto> produtosEncontrados = produtoService.consultarProdutos(nome, valorMaximo);
 
         return ResponseEntity.ok(produtosEncontrados);
     }
 
     @DeleteMapping("/apagar/{id}")
-    public ResponseEntity<Boolean> apagarProduto(@PathVariable("id") int id) {
-        int deletar = 0;
-        int index = -1;
-
-        for (Produto p : produtos) {
-            index++;
-            if (p.getId() == id) {
-                deletar = index;
-            }
+    public ResponseEntity<?> apagarProduto(@PathVariable("id") int id) {
+        try {
+            produtoService.apagarProduto(id);
+            return ResponseEntity.ok(true);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         }
-
-        produtos.remove(deletar);
-
-//        produtos.removeIf(p -> p.getId() == id);//forma reduzida para remover item
-
-        return ResponseEntity.ok(true);
     }
 }
