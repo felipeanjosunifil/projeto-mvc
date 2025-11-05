@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class ProdutoServiceImp implements ProdutoService {
+//@Service //exemplo de mais uma implementação de ProdutoService
+public class ProdutoServiceProdImp implements ProdutoService {
 
     private int id = 0;
     private List<Produto> produtos = new ArrayList<>();
@@ -15,6 +15,15 @@ public class ProdutoServiceImp implements ProdutoService {
     @Override
     public Boolean novoProduto(Produto produto) throws Exception {
         try {
+
+            if (produto.getNome() == null || produto.getNome().isEmpty()) {
+                throw new Exception("Nome não pode ser vazio");
+            }
+
+            if (produto.getDescricao().isEmpty()) {
+                throw new Exception("Descrição não pode ser vazia");
+            }
+
             produto.setId(++id);
             produtos.add(produto);
             return true;
