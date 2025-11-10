@@ -35,7 +35,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produto> getProdutoPorId(@PathVariable("id") int id) {
+    public ResponseEntity<Produto> getProdutoPorId(@PathVariable("id") Long id) {
         try {
             Produto produto = produtoService.getProdutoPorId(id);
             return ResponseEntity.ok(produto);
@@ -52,7 +52,7 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/apagar/{id}")
-    public ResponseEntity<?> apagarProduto(@PathVariable("id") int id) {
+    public ResponseEntity<?> apagarProduto(@PathVariable("id") Long id) {
         try {
             produtoService.apagarProduto(id);
             return ResponseEntity.ok(true);

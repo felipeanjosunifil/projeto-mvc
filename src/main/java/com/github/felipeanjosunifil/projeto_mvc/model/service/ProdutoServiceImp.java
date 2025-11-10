@@ -1,22 +1,23 @@
 package com.github.felipeanjosunifil.projeto_mvc.model.service;
 
 import com.github.felipeanjosunifil.projeto_mvc.model.entity.Produto;
+import com.github.felipeanjosunifil.projeto_mvc.model.repository.ProdutoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutoServiceImp implements ProdutoService {
 
-    private Long id = 0L;
-    private List<Produto> produtos = new ArrayList<>();
+    @Autowired
+    private ProdutoRepository repository;
 
     @Override
     public Boolean novoProduto(Produto produto) throws Exception {
         try {
-            produto.setId(++id);
-            produtos.add(produto);
+            repository.save(produto);
             return true;
         } catch (Exception e) {
             throw new Exception("Ocorreu um erro ao tentar criar um produto.\n" + e.getMessage());
@@ -25,21 +26,19 @@ public class ProdutoServiceImp implements ProdutoService {
 
     @Override
     public List<Produto> getProdutos() {
-        return produtos;
+
+        Iterable<Produto> produtos = repository.findAll();
+
+        return (List<Produto>) produtos;
     }
 
     @Override
-    public Produto getProdutoPorId(int id) throws Exception {
-        Produto produto = null;
+    public Produto getProdutoPorId(Long id) throws Exception {
 
-        for (Produto p : produtos) {
-            if (p.getId() == id) {
-                produto = p;
-            }
-        }
+        Optional<Produto> produtoEncontrado = repository.findById(id);
 
-        if(produto != null){
-            return produto;
+        if (produtoEncontrado.isPresent()) {
+            return produtoEncontrado.get();
         } else {
             throw new Exception("Nenhum produto com este id foi encontrado");
         }
@@ -47,39 +46,24 @@ public class ProdutoServiceImp implements ProdutoService {
 
     @Override
     public List<Produto> consultarProdutos(String nome, double valorMaximo) {
-        List<Produto> produtosEncontrados = new ArrayList<>();
+        Iterable<Produto> produtosEncontrados;
         double valorBuscar = 1000000.0;
 
         if (valorMaximo > 1) {
             valorBuscar = valorMaximo;
         }
 
-        for (Produto p: produtos) {
-            if (p.getNome().toLowerCase().contains(nome.toLowerCase()) && p.getPreco() <= valorBuscar) {
-                produtosEncontrados.add(p);
-            }
-        }
+        produtosEncontrados = repository.findByNomeAndPrecoBefore(nome, valorBuscar);
 
-        return produtosEncontrados;
+        return (List<Produto>) produtosEncontrados;
     }
 
     @Override
-    public Boolean apagarProduto(int id) throws Exception {
-//        int deletar = 0;
-//        int index = -1;
+    public Boolean apagarProduto(Long id) throws Exception {
 
-//        for (Produto p : produtos) {
-//            index++;
-//            if (p.getId() == id) {
-//                deletar = index;
-//            }
-//        }
-
-//        produtos.remove(deletar);
-
-        boolean deletou = produtos.removeIf(p -> p.getId() == id);//forma reduzida para remover item
-
-        if (!deletou) {
+        try {
+            repository.deleteById(id);
+        } catch (Exception e) {
             throw new Exception("Nenhum produto com esse id foi encontrado");
         }
 

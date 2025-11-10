@@ -37,7 +37,7 @@ public class ProdutoServiceProdImp implements ProdutoService {
     }
 
     @Override
-    public Produto getProdutoPorId(int id) throws Exception {
+    public Produto getProdutoPorId(Long id) throws Exception {
         Produto produto = null;
 
         for (Produto p : produtos) {
@@ -72,7 +72,7 @@ public class ProdutoServiceProdImp implements ProdutoService {
     }
 
     @Override
-    public Boolean apagarProduto(int id) throws Exception {
+    public Boolean apagarProduto(Long id) throws Exception {
 //        int deletar = 0;
 //        int index = -1;
 
