@@ -1,4 +1,4 @@
-package com.github.felipeanjosunifil.projeto_mvc.model;
+package com.github.felipeanjosunifil.projeto_mvc.model.entity;
 
 public class Usuario {
     private int id;

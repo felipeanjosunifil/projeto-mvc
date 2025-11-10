@@ -1,8 +1,7 @@
 package com.github.felipeanjosunifil.projeto_mvc.controller;
 
-import com.github.felipeanjosunifil.projeto_mvc.model.Produto;
+import com.github.felipeanjosunifil.projeto_mvc.model.entity.Produto;
 import com.github.felipeanjosunifil.projeto_mvc.model.service.ProdutoService;
-import com.github.felipeanjosunifil.projeto_mvc.model.service.ProdutoServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

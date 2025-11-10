@@ -1,6 +1,6 @@
 package com.github.felipeanjosunifil.projeto_mvc.model.service;
 
-import com.github.felipeanjosunifil.projeto_mvc.model.Produto;
+import com.github.felipeanjosunifil.projeto_mvc.model.entity.Produto;
 import java.util.List;
 
 public interface ProdutoService {
