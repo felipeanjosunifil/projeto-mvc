@@ -1,6 +1,6 @@
 package com.github.felipeanjosunifil.projeto_mvc.controller;
 
-import com.github.felipeanjosunifil.projeto_mvc.model.Usuario;
+import com.github.felipeanjosunifil.projeto_mvc.model.entity.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    private int ID = 0;
+    private Long ID = 0L;
     private List<Usuario> usuarios = new ArrayList<>();
 
     @PostMapping("/novo")

@@ -1,7 +1,16 @@
-package com.github.felipeanjosunifil.projeto_mvc.model;
+package com.github.felipeanjosunifil.projeto_mvc.model.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Produto {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String nome;
     private String descricao;
     private double preco;
@@ -10,6 +19,9 @@ public class Produto {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
+    }
+
+    public Produto() {
     }
 
     public String getNome() {
@@ -36,11 +48,11 @@ public class Produto {
         this.preco = preco;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

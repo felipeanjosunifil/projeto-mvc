@@ -1,7 +1,6 @@
 package com.github.felipeanjosunifil.projeto_mvc.model.service;
 
-import com.github.felipeanjosunifil.projeto_mvc.model.Produto;
-import org.springframework.stereotype.Service;
+import com.github.felipeanjosunifil.projeto_mvc.model.entity.Produto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 //@Service //exemplo de mais uma implementação de ProdutoService
 public class ProdutoServiceProdImp implements ProdutoService {
 
-    private int id = 0;
+    private Long id = 0L;
     private List<Produto> produtos = new ArrayList<>();
 
     @Override
