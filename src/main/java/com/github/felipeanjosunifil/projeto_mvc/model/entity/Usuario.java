@@ -19,6 +19,13 @@ public class Usuario {
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "usuario_id")
     private List<Contato> contatos;
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "usuario_enderecos",
+            joinColumns = @JoinColumn(name="usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "endereco_id")
+    )
+    private List<Endereco> enderecos;
 
     public Usuario(String nome, String senha, Documento documento, List<Contato> contatos) {
         this.nome = nome;
@@ -69,6 +76,14 @@ public class Usuario {
 
     public void setContatos(List<Contato> contatos) {
         this.contatos = contatos;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
     }
 
     @Override
