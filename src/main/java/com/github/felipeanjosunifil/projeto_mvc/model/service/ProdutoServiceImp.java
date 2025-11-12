@@ -53,7 +53,7 @@ public class ProdutoServiceImp implements ProdutoService {
             valorBuscar = valorMaximo;
         }
 
-        produtosEncontrados = repository.findByNomeAndPrecoBefore(nome, valorBuscar);
+        produtosEncontrados = repository.findByNomeContainingAndPrecoIsLessThanEqual(nome, valorBuscar);
 
         return (List<Produto>) produtosEncontrados;
     }

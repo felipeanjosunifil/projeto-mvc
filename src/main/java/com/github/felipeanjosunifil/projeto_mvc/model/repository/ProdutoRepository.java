@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ProdutoRepository extends CrudRepository<Produto, Long> {
 
-    public List<Produto> findByNomeAndPrecoBefore(String nome, Double preco);
+    public List<Produto> findByNomeContainingAndPrecoIsLessThanEqual(String nome, Double preco);
 }
