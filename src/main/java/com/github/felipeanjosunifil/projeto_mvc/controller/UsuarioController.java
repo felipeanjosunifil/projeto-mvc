@@ -15,9 +15,13 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/novo")
-    public ResponseEntity<Boolean> criarUsuario(@RequestBody Usuario usuario) {
-        usuarioService.criarUsuario(usuario);
-        return ResponseEntity.status(201).body(true);
+    public ResponseEntity<?> criarUsuario(@RequestBody Usuario usuario) {
+        try {
+            usuarioService.criarUsuario(usuario);
+            return ResponseEntity.status(201).body(true);
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getCause().getMessage());
+        }
     }
 
     @GetMapping

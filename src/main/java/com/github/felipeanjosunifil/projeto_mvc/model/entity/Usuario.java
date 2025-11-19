@@ -1,6 +1,9 @@
 package com.github.felipeanjosunifil.projeto_mvc.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -11,7 +14,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotEmpty(message = "O nome não pode ser vazio")
     private String nome;
+    @Size(min = 6, max = 10, message = "A senha deve conter entre 6 e 10 dígitos")
     private String senha;
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "documento_id")
