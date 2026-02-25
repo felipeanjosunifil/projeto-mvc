@@ -1,9 +1,11 @@
 package com.github.felipeanjosunifil.projeto_mvc.security;
 
+import com.github.felipeanjosunifil.projeto_mvc.model.service.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityFilter {
 
     @Bean
@@ -26,8 +29,8 @@ public class SecurityFilter {
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorization -> {
-                    authorization.requestMatchers(HttpMethod.POST,"/usuarios/**").hasRole("ADMIN");
                     authorization.requestMatchers("/login").permitAll();
+                    authorization.requestMatchers(HttpMethod.POST,"/usuarios/novo").permitAll();
                     authorization.anyRequest().authenticated();
                 })
                 .build();
@@ -39,10 +42,7 @@ public class SecurityFilter {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        UserDetails user1 = User.builder().username("user").password(passwordEncoder.encode("1234")).roles("USER").build();
-        UserDetails user2 = User.builder().username("admin").password(passwordEncoder.encode("qwert")).roles("ADMIN").build();
-
-        return new InMemoryUserDetailsManager(user1, user2);
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder, UsuarioService usuarioService) {
+        return new CustomUserDetails(usuarioService);
     }
 }

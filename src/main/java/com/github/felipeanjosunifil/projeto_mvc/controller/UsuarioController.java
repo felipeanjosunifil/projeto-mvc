@@ -1,55 +1,43 @@
 package com.github.felipeanjosunifil.projeto_mvc.controller;
 
 import com.github.felipeanjosunifil.projeto_mvc.model.entity.Usuario;
+import com.github.felipeanjosunifil.projeto_mvc.model.service.UsuarioService;
+import jakarta.servlet.ServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    private Long ID = 0L;
-    private List<Usuario> usuarios = new ArrayList<>();
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PostMapping("/novo")
     public ResponseEntity<Boolean> criarUsuario(@RequestBody Usuario usuario) {
-        usuario.setId(++ID);
-        usuarios.add(usuario);
-        return ResponseEntity.status(201).body(true);
+         Boolean criado = usuarioService.criarUsuario(usuario);
+        if (criado) {
+            return ResponseEntity.status(201).body(true);
+        } else {
+            return ResponseEntity.status(400).body(false);
+        }
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> getUsuarios() {
+    public ResponseEntity<List<Usuario>> getUsuarios(ServletRequest servletRequest) {
+        List<Usuario> usuarios = usuarioService.getUsuarios();
         return ResponseEntity.status(200).body(usuarios);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deletarUsuarioPorId(@PathVariable("id") int id) {
-        Usuario usuarioDelecao = null;
+    public ResponseEntity<Boolean> deletarUsuarioPorId(@PathVariable("id") Long id) {
+        Boolean deletado = usuarioService.deletarUsuarioPorId(id);
 
-        for (Usuario usuario : usuarios) {
-            if (usuario.getId() == id) {
-                usuarioDelecao = usuario;
-            }
-        }
-
-        if (usuarioDelecao != null) {
-            usuarios.remove(usuarioDelecao);
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.status(404).body(false);
-        }
-    }
-
-    public ResponseEntity<Boolean> deletarUsuarioPor(@PathVariable("id") int id) {
-
-        boolean deletou = usuarios.removeIf(usuario -> usuario.getId() == id);
-
-        if(deletou) {
-            return ResponseEntity.ok(true);
+        if (deletado) {
+            return ResponseEntity.status(200).body(true);
         } else {
             return ResponseEntity.status(404).body(false);
         }
@@ -57,24 +45,6 @@ public class UsuarioController {
 
     @PutMapping
     public ResponseEntity<Boolean> atualizarUsuarioPorId(@RequestBody Usuario usuarioAtual) {
-//        boolean atualizado = false;
-        Usuario usuarioAtualiacao = null;
-        int index = 0;
-
-        for (Usuario usuario : usuarios) {
-            if (usuarioAtualiacao == null) {
-                index++;
-            }
-            if (usuario.getId() == usuarioAtual.getId()) {
-                usuarioAtualiacao = usuario;
-            }
-        }
-
-        if (usuarioAtualiacao != null) {
-            usuarios.set(index-1, usuarioAtual);
-            return ResponseEntity.ok(true);
-        } else {
-            return ResponseEntity.badRequest().body(false);
-        }
+        return ResponseEntity.badRequest().body(false);
     }
 }

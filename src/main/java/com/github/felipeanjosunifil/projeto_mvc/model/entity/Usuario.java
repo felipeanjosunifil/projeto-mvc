@@ -14,15 +14,15 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
-    @ElementCollection
-    @CollectionTable(name = "papeis", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "papeis")
-    private List<String> papeis;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Papel> papeis;
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(Long id, String nome, String email, String senha, List<Papel> papeis) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.papeis = papeis;
     }
 
     public Usuario() {
@@ -59,6 +59,18 @@ public class Usuario {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<Papel> getPapeis() {
+        return papeis;
+    }
+
+    public void setPapeis(List<Papel> papeis) {
+        this.papeis = papeis;
+    }
+
+    public List<String> getPapeisString() {
+        return this.papeis.stream().map(Papel::getPapel).toList();
     }
 
     @Override
