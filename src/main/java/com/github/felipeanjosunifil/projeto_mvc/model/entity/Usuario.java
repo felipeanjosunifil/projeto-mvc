@@ -1,9 +1,8 @@
 package com.github.felipeanjosunifil.projeto_mvc.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 
 @Entity
@@ -15,6 +14,10 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    @ElementCollection
+    @CollectionTable(name = "papeis", joinColumns = @JoinColumn(name = "id"))
+    @Column(name = "papeis")
+    private List<String> papeis;
 
     public Usuario(String nome, String email, String senha) {
         this.nome = nome;
