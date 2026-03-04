@@ -25,9 +25,13 @@ public class SecurityFilter {
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorization -> {
+
+                    //permite requisições para estes endpoints
                     authorization.requestMatchers(HttpMethod.POST,"/usuarios/novo").permitAll();
                     authorization.requestMatchers(HttpMethod.POST,"/papel/novo").permitAll();
+
                     authorization.requestMatchers(HttpMethod.POST, "/produtos/novo").hasRole("ADMIN");
+
                     authorization.anyRequest().authenticated();
                 })
                 .build();

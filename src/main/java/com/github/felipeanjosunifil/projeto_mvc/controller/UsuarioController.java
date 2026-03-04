@@ -5,8 +5,6 @@ import com.github.felipeanjosunifil.projeto_mvc.model.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,7 +45,6 @@ public class UsuarioController {
             return ResponseEntity.status(404).body(false);
         }
     }
-
 
     @PutMapping
     public ResponseEntity<Boolean> atualizarUsuarioPorId(@RequestBody Usuario usuarioAtual) {
