@@ -15,7 +15,7 @@ public class Usuario {
     @Column(unique = true)
     private String email;
     private String senha;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "papeis_usuario",
             joinColumns = @JoinColumn(name= "usuario_id"),

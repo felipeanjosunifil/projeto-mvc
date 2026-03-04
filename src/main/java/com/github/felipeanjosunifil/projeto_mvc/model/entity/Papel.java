@@ -12,6 +12,10 @@ public class Papel {
     @Column(unique = true)
     private String papel;
 
+    public Papel() {
+    }
+
+
     public Long getId() {
         return id;
     }
