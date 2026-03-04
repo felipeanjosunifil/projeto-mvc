@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 
-@Entity
+@Entity(name = "usuarios")
 public class Usuario {
 
     @Id
@@ -15,7 +15,7 @@ public class Usuario {
     @Column(unique = true)
     private String email;
     private String senha;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "papeis_usuario",
             joinColumns = @JoinColumn(name= "usuario_id"),

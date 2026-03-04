@@ -27,4 +27,9 @@ public class Papel {
     public void setPapel(String papel) {
         this.papel = papel;
     }
+
+    public Papel(Long id, String papel) {
+        this.id = id;
+        this.papel = papel;
+    }
 }
