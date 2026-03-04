@@ -17,8 +17,13 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/novo")
-    public ResponseEntity<Boolean> criarUsuario(@RequestBody Usuario usuario) {
-        Boolean criou = usuarioService.criarUsuario(usuario);
+    public ResponseEntity<?> criarUsuario(@RequestBody Usuario usuario) {
+        Boolean criou = false;
+        try {
+            criou = usuarioService.criarUsuario(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         if (criou) {
             return ResponseEntity.status(201).body(true);
         } else {

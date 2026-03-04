@@ -1,6 +1,7 @@
 package com.github.felipeanjosunifil.projeto_mvc.model;
 
 import com.github.felipeanjosunifil.projeto_mvc.model.entity.Produto;
+import com.github.felipeanjosunifil.projeto_mvc.model.entity.Usuario;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

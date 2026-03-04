@@ -12,9 +12,15 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nome;
+    @Column(unique = true)
     private String email;
     private String senha;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "papeis_usuario",
+            joinColumns = @JoinColumn(name= "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "papel_id")
+    )
     private List<Papel> papeis;
 
     public Usuario(Long id, String nome, String email, String senha, List<Papel> papeis) {
