@@ -14,11 +14,13 @@ public class Produto {
     private String nome;
     private String descricao;
     private double preco;
+    private String imgSrc;
 
-    public Produto(String nome, String descricao, double preco) {
+    public Produto(String nome, String descricao, double preco,  String imgSrc) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
+        this.imgSrc = imgSrc;
     }
 
     public Produto() {
@@ -54,6 +56,14 @@ public class Produto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImgSrc() {
+        return imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
     @Override
