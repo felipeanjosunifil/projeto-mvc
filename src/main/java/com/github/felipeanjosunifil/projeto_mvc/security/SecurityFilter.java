@@ -1,51 +1,50 @@
 package com.github.felipeanjosunifil.projeto_mvc.security;
 
-import com.github.felipeanjosunifil.projeto_mvc.model.service.UsuarioService;
+import com.github.felipeanjosunifil.projeto_mvc.model.service.TokenService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-@Configuration
-@EnableWebSecurity
-public class SecurityFilter {
+import java.io.IOException;
 
-    @Bean
-    public SecurityFilterChain securityFIlterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorization -> {
+@Component
+public class SecurityFilter extends OncePerRequestFilter {
 
-                    //permite requisições para estes endpoints
-                    authorization.requestMatchers(HttpMethod.POST,"/usuarios/novo").permitAll();
-                    authorization.requestMatchers(HttpMethod.POST,"/papel/novo").permitAll();
+    @Autowired
+    private TokenService tokenService;
 
-                    authorization.requestMatchers(HttpMethod.POST, "/produtos/novo").hasRole("ADMIN");
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-                    authorization.anyRequest().authenticated();
-                })
-                .build();
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = recuperarToken(request);
+
+        if(token != null) {
+            String login = tokenService.validarToken(token);
+            if (login != null) {
+                UserDetails usuario = userDetailsService.loadUserByUsername(login);
+                UsernamePasswordAuthenticationToken autenticacao = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(autenticacao);
+            }
+        }
+        filterChain.doFilter(request, response);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(UsuarioService usuarioService) {
-        return new CustomUserDetails(usuarioService);
+    private String recuperarToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null) {
+            return authHeader.replace("Bearer ", "");
+        }
+        return null;
     }
 }
